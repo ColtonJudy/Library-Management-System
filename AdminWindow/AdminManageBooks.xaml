@@ -1,0 +1,33 @@
+﻿<Window x:Class="Library_Management_System.AdminManageBooks"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Library_Management_System"
+        mc:Ignorable="d"
+        Title="AdminManageBooks" Height="400" Width="400">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Label Grid.Row="0" Content="Books" FontSize="15" HorizontalAlignment="Center"/>
+        <ListView x:Name="BooksListView" Grid.Column="0" Grid.Row="1" Grid.RowSpan="6" SelectionChanged="BooksListView_SelectionChanged" Margin="5"/>
+
+        <Button x:Name="IssueBookButton" Grid.Column="1" Grid.Row="1" Content="Issue Book" Margin="20" Click="IssueBookButton_Click"/>
+        <Button x:Name="ReturnBookButton" Grid.Column="1" Grid.Row="2" Content="Return Book" Margin="20" Click="ReturnBookButton_Click"/>
+        <Button x:Name="BookInformationButton" Grid.Column="1" Grid.Row="3" Content="Book Information" Margin="20" Click="BookInformationButton_Click"/>
+        <Button x:Name="AddBookButton" Grid.Column="1" Grid.Row="4" Content="Add Book" Margin="20" Click="AddBookButton_Click"/>
+        <Button x:Name="DeleteBookButton" Grid.Column="1" Grid.Row="6" Content="Delete Book" Margin="20" Click="DeleteBookButton_Click"/>
+    </Grid>
+</Window>
