@@ -27,7 +27,8 @@ namespace Library_Management_System
 
         private void IssueButton_Click(object sender, RoutedEventArgs e)
         {
-
+            IssueBookToUser issueBookToUser = new IssueBookToUser();
+            issueBookToUser.ShowDialog();
         }
 
         private void returnButton_Click(object sender, RoutedEventArgs e)

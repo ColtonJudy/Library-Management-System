@@ -18,7 +18,7 @@
         </Grid.RowDefinitions>
 
         <Label Grid.Row="0" Content="Select User" FontSize="15" HorizontalAlignment="Center"/>
-        <ListView x:Name="UserListView" Grid.Column="0" Grid.Row="1" Grid.RowSpan="6" Margin="5" SelectionChanged="UserListView_SelectionChanged"/>
+        <ListView x:Name="UserListView" Grid.Column="0" Grid.Row="1" Grid.RowSpan="1" Margin="5" SelectionChanged="UserListView_SelectionChanged"/>
         <Button x:Name="ConfirmButton" Grid.Column="0" Grid.Row="2" Content="Issue Book" Margin="10" Click="ConfirmButton_Click"/>
 
     </Grid>
