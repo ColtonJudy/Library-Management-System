@@ -33,12 +33,14 @@ namespace Library_Management_System
 
         private void returnButton_Click(object sender, RoutedEventArgs e)
         {
-
+            ReturnBook returnBook = new ReturnBook();
+            returnBook.ShowDialog();
         }
 
         private void chargeFeeButton_Click(object sender, RoutedEventArgs e)
         {
-
+            ChargeFeeToUser chargeFeeToUser = new ChargeFeeToUser();
+            chargeFeeToUser.ShowDialog();
         }
 
         private void manageBooksButton_Click(object sender, RoutedEventArgs e)

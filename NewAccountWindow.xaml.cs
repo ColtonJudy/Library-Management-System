@@ -83,7 +83,7 @@ namespace Library_Management_System
                     }
 
                     //insert the new user into the table
-                    string query2 = "INSERT INTO users (FirstName, LastName, Email, Password, IsAdmin) VALUES (@FirstName, @LastName, @Email, @Password, @IsAdmin)";
+                    string query2 = "INSERT INTO users (FirstName, LastName, Email, Password, IsAdmin, AccountBalance) VALUES (@FirstName, @LastName, @Email, @Password, @IsAdmin, @AccountBalance)";
 
                     using (MySqlCommand command = new MySqlCommand(query2, connection))
                     {
@@ -94,6 +94,7 @@ namespace Library_Management_System
                         command.Parameters.AddWithValue("@Email", email);
                         command.Parameters.AddWithValue("@Password", password);
                         command.Parameters.AddWithValue("@IsAdmin", 0);
+                        command.Parameters.AddWithValue("@AccountBalance", 0.00);
                         command.ExecuteNonQuery();
 
                         UserWindow userWindow = new UserWindow();
