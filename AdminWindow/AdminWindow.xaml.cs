@@ -51,7 +51,8 @@ namespace Library_Management_System
 
         private void manageUsersButton_Click(object sender, RoutedEventArgs e)
         {
-
+            AdminManageUsers adminManageUsers = new AdminManageUsers();
+            adminManageUsers.ShowDialog();
         }
     }
 }
