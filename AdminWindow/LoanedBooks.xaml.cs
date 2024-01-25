@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,11 +20,98 @@ namespace Library_Management_System
     /// </summary>
     public partial class LoanedBooks : Window
     {
+        MySqlConnection connection;
+
         public string selectedUser = "";
+        private string selectedBook = "";
 
         public LoanedBooks()
         {
             InitializeComponent();
+            connection = new MySqlConnection(LibraryDatabase.GetConnectionString());
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            PopulateBookListView();
+        }
+
+        private void PopulateBookListView()
+        {
+            List<string> bookList = new List<string>();
+
+            try
+            {
+                connection.Open();
+
+                //TODO: Use IDs instead of names to issue books
+                string query = "SELECT Name FROM Books WHERE LoanedUserEmail = @LoanedUserEmail";
+
+                using (MySqlCommand command = new MySqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@LoanedUserEmail", selectedUser);
+
+                    // Execute the query and get the result
+                    using (MySqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            string book = reader["Name"].ToString();
+                            bookList.Add(book);
+                        }
+                    }
+
+                    connection.Close();
+                }
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine("Error: " + exception.Message);
+            }
+            finally
+            {
+                connection.Close();
+            }
+
+            BookListView.ItemsSource = bookList;
+        }
+
+        private void BookListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            selectedBook = BookListView.SelectedItem.ToString() ?? "";
+        }
+
+        private void ReturnBookButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (selectedBook != null && selectedBook != "")
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "UPDATE Books SET LoanedUserEmail=@LoanedUserEmail, IsLoaned = @IsLoaned WHERE Name = @BookName";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+
+                        command.Parameters.AddWithValue("@LoanedUserEmail", null);
+                        command.Parameters.AddWithValue("@IsLoaned", false);
+                        command.Parameters.AddWithValue("@BookName", selectedBook);
+                        command.ExecuteNonQuery();
+
+                        connection.Close();
+                    }
+                }
+                catch (Exception exception)
+                {
+                    Console.WriteLine("Error: " + exception.Message);
+                }
+                finally
+                {
+                    connection.Close();
+                }
+                Close();
+            }
         }
     }
 }
