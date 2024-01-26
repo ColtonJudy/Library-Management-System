@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,7 +11,7 @@ namespace Library_Management_System
     {
         public static string GetConnectionString()
         {
-            return "server=localhost;database=lmsdb;user=root;password=1234";
+            return ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString;
         }
     }
 }
