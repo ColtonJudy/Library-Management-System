@@ -5,8 +5,30 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Library_Management_System"
         mc:Ignorable="d"
-        Title="AccountBalance" Height="450" Width="800">
+        Title="AccountBalance" Height="300" Width="200"
+        Loaded="Window_Loaded">
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="45"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="45"/>
+            <RowDefinition Height="45"/>
+            <RowDefinition Height="45"/>
+            <RowDefinition Height="45"/>
+        </Grid.RowDefinitions>
+
+        <Label Grid.Row="0" Content="Current Balance" FontSize="15" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
+        <TextBox x:Name="CurrentBalanceTextBox" Grid.Row="1" IsReadOnly="True" Margin="10"/>
+
+        <Label Grid.Row="2" Content="Amount To Charge" FontSize="15" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
+        <TextBox x:Name="AmountToChargeTextBox" PreviewTextInput="PreviewTextInput" Grid.Row="3" Margin="10" TextChanged="AmountToCharge_TextChanged"/>
+        <Button x:Name="DebitAccountButton" Grid.Row="4" Content="Debit User Account" Margin="10" Click="DebitAccountButton_Click"/>
+        <Button x:Name="CreditAccountButton" Grid.Row="5" Content="Credit User Account" Margin="10" Click="CreditAccountButton_Click"/>
+        <Button x:Name="ClearAccountBalance" Grid.Row="6" Content="Clear Account Balance" Margin="10" Click="ClearAccountButton_Click"/>
     </Grid>
 </Window>
