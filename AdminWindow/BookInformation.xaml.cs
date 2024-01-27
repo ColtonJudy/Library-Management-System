@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -20,68 +21,33 @@ namespace Library_Management_System
     /// </summary>
     public partial class BookInformation : Window
     {
-        MySqlConnection connection;
-
-        public string selectedBook;
+        public string selectedBook = "";
 
         public BookInformation()
         {
             InitializeComponent();
-            connection = new MySqlConnection(LibraryDatabase.GetConnectionString());
         }
 
-        public void InitializeLabels()
+        private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            try
+            InitializeLabels();
+        }
+
+        private void InitializeLabels()
+        {
+            var bookInfo = LibraryBooks.GetBookInfo(selectedBook);
+
+            NameLabel.Content = selectedBook;
+            AuthorLabel.Content = "Author: " + bookInfo.Item2 + " " + bookInfo.Item3;
+            IDLabel.Content = "Book ID: " + bookInfo.Item1;
+
+            if (bookInfo.Item5)
             {
-                connection.Open();
-
-                //TODO: Use IDs instead of names to issue books
-                string query = "SELECT BookID, AuthorFirst, AuthorLast, LoanedUserEmail, IsLoaned FROM Books WHERE Name = @BookName";
-
-                using (MySqlCommand command = new MySqlCommand(query, connection))
-                {
-                    command.Parameters.AddWithValue("@BookName", selectedBook);
-
-                    using (MySqlDataReader reader = command.ExecuteReader())
-                    {
-                        if (reader.Read())
-                        {
-                            string bookID = reader["BookID"].ToString() ?? "";
-                            string authorFirst = reader["AuthorFirst"].ToString() ?? "";
-                            string authorLast = reader["AuthorLast"].ToString() ?? "";
-                            string loanedUserEmail = reader["LoanedUserEmail"].ToString() ?? "";
-                            bool isLoaned = (bool)reader["IsLoaned"];
-
-                            NameLabel.Content = selectedBook;
-                            AuthorLabel.Content = "Author: " + authorFirst + " " + authorLast;
-                            IDLabel.Content = "Book ID: " + bookID;
-
-                            if (isLoaned)
-                            {
-                                LoanedToLabel.Content = "This book is not available. Currently loaned to " + loanedUserEmail;
-                            }
-                            else
-                            {
-                                LoanedToLabel.Content = "This book is available";
-                            }
-                        }
-                        else
-                        {
-                            Console.WriteLine("No matching book found");
-                        }
-                    }
-
-                    connection.Close();
-                }
+                LoanedToLabel.Content = "This book is not available. Currently loaned to " + bookInfo.Item4;
             }
-            catch (Exception exception)
+            else
             {
-                Console.WriteLine("Error: " + exception.Message);
-            }
-            finally
-            {
-                connection.Close();
+                LoanedToLabel.Content = "This book is available";
             }
         }
     }

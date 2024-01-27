@@ -21,18 +21,15 @@ namespace Library_Management_System
     /// </summary>
     public partial class AccountBalance : Window
     {
-        MySqlConnection connection;
-
         public string selectedUser = "";
-        public double amountToCharge = 0.0;
+        private double amountToCharge = 0.0;
 
-        public static readonly Regex previewTextRegex = new Regex(@"^[1-9]\d{0,2}(\.|\.\d{1,2})?$"); //this allows it to end with a decimal while the user is typing
-        public static readonly Regex textRegex = new Regex(@"^[1-9]\d{0,2}(\.\d{1,2})?$"); //this does not allow the amount to end with a decimal
+        private static readonly Regex previewTextRegex = new Regex(@"^[1-9]\d{0,2}(\.|\.\d{1,2})?$"); //this allows it to end with a decimal while the user is typing
+        private static readonly Regex textRegex = new Regex(@"^[1-9]\d{0,2}(\.\d{1,2})?$"); //this does not allow the amount to end with a decimal
 
         public AccountBalance()
         {
             InitializeComponent();
-            connection = new MySqlConnection(LibraryDatabase.GetConnectionString());
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -40,46 +37,12 @@ namespace Library_Management_System
             LoadCurrentBalance();
         }
 
-        public void LoadCurrentBalance()
+        private void LoadCurrentBalance()
         {
-            string balance = "";
-
-            try
-            {
-                connection.Open();
-
-                //TODO: Use IDs instead of names to issue books
-                string query = "SELECT AccountBalance FROM Users WHERE Email = @UserEmail";
-
-                using (MySqlCommand command = new MySqlCommand(query, connection))
-                {
-                    command.Parameters.AddWithValue("@UserEmail", selectedUser);
-
-                    // Execute the query and get the result
-                    using (MySqlDataReader reader = command.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            balance = reader["AccountBalance"].ToString();
-                        }
-                    }
-
-                    connection.Close();
-                }
-            }
-            catch (Exception exception)
-            {
-                Console.WriteLine("Error: " + exception.Message);
-            }
-            finally
-            {
-                connection.Close();
-            }
-
-            CurrentBalanceTextBox.Text = balance;
+            CurrentBalanceTextBox.Text = "$" + LibraryUsers.LoadBalance(selectedUser).ToString();
         }
 
-        public void PreviewTextInput(object sender, TextCompositionEventArgs e)
+        private void PreviewInput(object sender, TextCompositionEventArgs e)
         {
             TextBox textBox = (TextBox)sender;
             int index = textBox.CaretIndex;
@@ -89,12 +52,12 @@ namespace Library_Management_System
             e.Handled = !IsPreviewTextAllowed(newText);
         }
 
-        public static bool IsPreviewTextAllowed(string text)
+        private static bool IsPreviewTextAllowed(string text)
         {
             return previewTextRegex.IsMatch(text);
         }
 
-        public static bool IsTextAllowed(string text)
+        private static bool IsTextAllowed(string text)
         {
             return textRegex.IsMatch(text);
         }
@@ -113,105 +76,24 @@ namespace Library_Management_System
 
         private void DebitAccountButton_Click(object sender, RoutedEventArgs e)
         {
-            if (selectedUser != "" && amountToCharge != 0.0)
-            {
-                try
-                {
-                    connection.Open();
 
-                    //TODO: Use IDs instead of names to issue books
-                    string query = "UPDATE Users SET AccountBalance = AccountBalance - @ChargedFee WHERE Email = @UserEmail";
-
-                    using (MySqlCommand command = new MySqlCommand(query, connection))
-                    {
-
-                        command.Parameters.AddWithValue("@UserEmail", selectedUser);
-                        command.Parameters.AddWithValue("@ChargedFee", amountToCharge);
-                        command.ExecuteNonQuery();
-
-                        connection.Close();
-                    }
-                }
-                catch (Exception exception)
-                {
-                    Console.WriteLine("Error: " + exception.Message);
-                }
-                finally
-                {
-                    connection.Close();
-                }
-
-                LoadCurrentBalance();
-                AmountToChargeTextBox.Text = "";
-            }
+            LibraryUsers.ChargeAccount(selectedUser, amountToCharge);
+            LoadCurrentBalance();
+            AmountToChargeTextBox.Text = "";
         }
 
         private void CreditAccountButton_Click(object sender, RoutedEventArgs e)
         {
-            if (selectedUser != "" && amountToCharge != 0.0)
-            {
-                try
-                {
-                    connection.Open();
-
-                    //TODO: Use IDs instead of names to issue books
-                    string query = "UPDATE Users SET AccountBalance = AccountBalance + @ChargedFee WHERE Email = @UserEmail";
-
-                    using (MySqlCommand command = new MySqlCommand(query, connection))
-                    {
-
-                        command.Parameters.AddWithValue("@UserEmail", selectedUser);
-                        command.Parameters.AddWithValue("@ChargedFee", amountToCharge);
-                        command.ExecuteNonQuery();
-
-                        connection.Close();
-                    }
-                }
-                catch (Exception exception)
-                {
-                    Console.WriteLine("Error: " + exception.Message);
-                }
-                finally
-                {
-                    connection.Close();
-                }
-
-                LoadCurrentBalance();
-                AmountToChargeTextBox.Text = "";
-            }
+            LibraryUsers.ChargeAccount(selectedUser, -amountToCharge);
+            LoadCurrentBalance();
+            AmountToChargeTextBox.Text = "";
         }
 
         private void ClearAccountButton_Click(object sender, RoutedEventArgs e)
         {
-            if (selectedUser != "")
-            {
-                try
-                {
-                    connection.Open();
-
-                    //TODO: Use IDs instead of names to issue books
-                    string query = "UPDATE Users SET AccountBalance = @ChargedFee WHERE Email = @UserEmail";
-
-                    using (MySqlCommand command = new MySqlCommand(query, connection))
-                    {
-
-                        command.Parameters.AddWithValue("@UserEmail", selectedUser);
-                        command.Parameters.AddWithValue("@ChargedFee", 0);
-                        command.ExecuteNonQuery();
-                    }
-                }
-                catch (Exception exception)
-                {
-                    Console.WriteLine("Error: " + exception.Message);
-                }
-                finally
-                {
-                    connection.Close();
-                }
-
-                LoadCurrentBalance();
-                AmountToChargeTextBox.Text = "";
-            }
+            LibraryUsers.ClearAccountBalance(selectedUser);
+            LoadCurrentBalance();
+            AmountToChargeTextBox.Text = "";
         }
     }
 }

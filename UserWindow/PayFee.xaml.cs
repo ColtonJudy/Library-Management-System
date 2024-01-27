@@ -20,7 +20,6 @@ namespace Library_Management_System
     /// </summary>
     public partial class PayFee : Window
     {
-        MySqlConnection connection;
 
         private string currentUser = "";
         private double currentBalance = 0.0;
@@ -33,7 +32,6 @@ namespace Library_Management_System
         public PayFee()
         {
             InitializeComponent();
-            connection = new MySqlConnection(LibraryDatabase.GetConnectionString());
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -45,37 +43,7 @@ namespace Library_Management_System
         {
             if(currentUser != "")
             {
-                try
-                {
-                    connection.Open();
-
-                    //TODO: Use IDs instead of names to issue books
-                    string query = "SELECT AccountBalance FROM Users WHERE Email = @UserEmail";
-
-                    using (MySqlCommand command = new MySqlCommand(query, connection))
-                    {
-                        command.Parameters.AddWithValue("@UserEmail", currentUser);
-
-                        // Execute the query and get the result
-                        using (MySqlDataReader reader = command.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                currentBalance = Convert.ToDouble(reader["AccountBalance"]);
-                            }
-                        }
-
-                        connection.Close();
-                    }
-                }
-                catch (Exception exception)
-                {
-                    Console.WriteLine("Error: " + exception.Message);
-                }
-                finally
-                {
-                    connection.Close();
-                }
+                currentBalance = LibraryUsers.LoadBalance(currentUser);
 
                 CurrentBalanceTextBox.Text = "$" + currentBalance.ToString();
             }
@@ -85,29 +53,7 @@ namespace Library_Management_System
         {
             if (currentUser != "" && currentBalance < 0)
             {
-                try
-                {
-                    connection.Open();
-
-                    //TODO: Use IDs instead of names to issue books
-                    string query = "UPDATE Users SET AccountBalance = @NewBalance WHERE Email = @UserEmail";
-
-                    using (MySqlCommand command = new MySqlCommand(query, connection))
-                    {
-                        command.Parameters.AddWithValue("@UserEmail", currentUser);
-                        command.Parameters.AddWithValue("@NewBalance", 0.0);
-                        command.ExecuteNonQuery();
-                    }
-                }
-                catch (Exception exception)
-                {
-                    Console.WriteLine("Error: " + exception.Message);
-                }
-                finally
-                {
-                    connection.Close();
-                }
-
+                LibraryUsers.ClearAccountBalance(currentUser);
                 LoadCurrentBalance();
             }
         }

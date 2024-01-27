@@ -30,7 +30,7 @@
 
         <Button Grid.Column="1" Grid.Row="4" x:Name="BrowseButton" Content="Browse Catalog" Margin="10" Click="BrowseButton_Click"/>
         <Button Grid.Column="1" Grid.Row="5" x:Name="ManageBooksButton" Content="Manage Checked Out Books" Margin="10" Click="ManageBooksButton_Click"/>
-        <Button Grid.Column="1" Grid.Row="6" x:Name="PayFeeButton" Content="Pay A Fee" Margin="10" Click="PayFeeButton_Click"/>
+        <Button Grid.Column="1" Grid.Row="6" x:Name="PayFeeButton" Content="Pay Current Balance" Margin="10" Click="PayFeeButton_Click"/>
         <Button Grid.Column="1" Grid.Row="7" x:Name="LibraryHoursButton" Content="Library Hours" Margin="10" Click="LibraryHoursButton_Click"/>
     </Grid>
 </Window>

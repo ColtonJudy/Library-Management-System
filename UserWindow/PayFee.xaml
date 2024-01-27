@@ -21,6 +21,6 @@
 
         <Label Grid.Row="0" Content="Current Balance" FontSize="15" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
         <TextBox x:Name="CurrentBalanceTextBox" Grid.Row="1" IsReadOnly="True" Margin="10"/>
-        <Button x:Name="PayFeeButton" Grid.Row="4" Content="Pay Fee" Margin="10" Click="PayFeeButton_Click"/>
+        <Button x:Name="PayFeeButton" Grid.Row="4" Content="Pay Balance" Margin="10" Click="PayFeeButton_Click"/>
     </Grid>
 </Window>

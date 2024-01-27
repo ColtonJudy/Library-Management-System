@@ -20,54 +20,17 @@ namespace Library_Management_System
     /// </summary>
     public partial class AdminManageUsers : Window
     {
-        MySqlConnection connection;
-
-        public string selectedUser = "";
+        private string selectedUser = "";
 
         public AdminManageUsers()
         {
             InitializeComponent();
-            connection = new MySqlConnection(LibraryDatabase.GetConnectionString());
             PopulateUserListView();
         }
 
-        public void PopulateUserListView()
+        private void PopulateUserListView()
         {
-            List<string> userList = new List<string>();
-
-            try
-            {
-                connection.Open();
-
-                //TODO: Use IDs instead of names to issue books
-                string query = "SELECT Email FROM Users";
-
-                using (MySqlCommand command = new MySqlCommand(query, connection))
-                {
-
-                    // Execute the query and get the result
-                    using (MySqlDataReader reader = command.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            string user = reader["Email"].ToString();
-                            userList.Add(user);
-                        }
-                    }
-
-                    connection.Close();
-                }
-            }
-            catch (Exception exception)
-            {
-                Console.WriteLine("Error: " + exception.Message);
-            }
-            finally
-            {
-                connection.Close();
-            }
-
-            UsersListView.ItemsSource = userList;
+            UsersListView.ItemsSource = LibraryUsers.GetUsers();
         }
 
         private void UsersListView_SelectionChanged(object sender, SelectionChangedEventArgs e)

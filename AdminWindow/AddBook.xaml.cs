@@ -20,80 +20,41 @@ namespace Library_Management_System
     /// </summary>
     public partial class AddBook : Window
     {
-        private MySqlConnection connection;
 
         public AddBook()
         {
             InitializeComponent();
-            connection = new MySqlConnection(LibraryDatabase.GetConnectionString());
 
         }
 
-        private void addBookButton_Click(object sender, RoutedEventArgs e)
+        private void AddBookButton_Click(object sender, RoutedEventArgs e)
         {
-            string bookTitle = bookNameTextbox.Text;
-            string authorFirst = firstNameTextbox.Text;
-            string authorLast = lastNameTextbox.Text;
+            string bookTitle = BookNameTextbox.Text;
+            string authorFirst = FirstNameTextbox.Text;
+            string authorLast = LastNameTextbox.Text;
 
             if (bookTitle.Length == 0)
             {
-                errorLabel.Content = "Invalid book title";
+                ErrorLabel.Content = "Invalid book title";
             }
             else if (authorFirst.Length == 0)
             {
-                errorLabel.Content = "Invalid first name";
+                ErrorLabel.Content = "Invalid first name";
             }
             else if (authorLast.Length == 0)
             {
-                errorLabel.Content = "Invalid last name";
+                ErrorLabel.Content = "Invalid last name";
             }
             else
             {
-                try
+                if (LibraryBooks.IsBookNameInUse(bookTitle))
                 {
-                    connection.Open();
-
-                    //check to see if book already exists
-                    //TODO: Make book management independent of title, rely on ID instead.
-                    string query1 = "SELECT COUNT(*) FROM Books WHERE Name = @Name";
-
-                    using (MySqlCommand command = new MySqlCommand(query1, connection))
-                    {
-                        command.Parameters.AddWithValue("@Name", bookTitle);
-
-                        long matchingUserCount = (long)command.ExecuteScalar();
-
-                        if (matchingUserCount > 0)
-                        {
-                            errorLabel.Content = "Email already in use";
-                            return;
-                        }
-                    }
-
-                    //insert the new book into the table
-                    string query = "INSERT INTO books (Name, AuthorFirst, AuthorLast, LoanedUserEmail, IsLoaned) VALUES (@Name, @AuthorFirst, @AuthorLast, @LoanedUserEmail, @IsLoaned)";
-
-                    using (MySqlCommand command = new MySqlCommand(query, connection))
-                    {
-                        // Set the parameters
-                        command.Parameters.AddWithValue("@Name", bookTitle);
-                        command.Parameters.AddWithValue("@AuthorFirst", authorFirst);
-                        command.Parameters.AddWithValue("@AuthorLast", authorLast);
-                        command.Parameters.AddWithValue("@LoanedUserEmail", null);
-                        command.Parameters.AddWithValue("@IsLoaned", false);
-                        command.ExecuteNonQuery();
-
-                        Close();
-                    }
+                    ErrorLabel.Content = "Book name already in use";
                 }
-                catch (Exception exception)
+                else
                 {
-                    Console.WriteLine("Error: " + exception.Message);
-                    errorLabel.Content = "Error: " + exception.Message;
-                }
-                finally
-                {
-                    connection.Close();
+                    LibraryBooks.AddBook(bookTitle, authorFirst, authorLast);
+                    Close();
                 }
             }
         }

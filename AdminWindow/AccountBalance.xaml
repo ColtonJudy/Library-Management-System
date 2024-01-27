@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Library_Management_System"
         mc:Ignorable="d"
-        Title="AccountBalance" Height="300" Width="200"
+        Title="AccountBalance" Height="320" Width="200"
         Loaded="Window_Loaded">
     <Grid>
         <Grid.ColumnDefinitions>
@@ -26,7 +26,7 @@
         <TextBox x:Name="CurrentBalanceTextBox" Grid.Row="1" IsReadOnly="True" Margin="10"/>
 
         <Label Grid.Row="2" Content="Amount To Charge" FontSize="15" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
-        <TextBox x:Name="AmountToChargeTextBox" PreviewTextInput="PreviewTextInput" Grid.Row="3" Margin="10" TextChanged="AmountToCharge_TextChanged"/>
+        <TextBox x:Name="AmountToChargeTextBox" PreviewTextInput="PreviewInput" Grid.Row="3" Margin="10" TextChanged="AmountToCharge_TextChanged"/>
         <Button x:Name="DebitAccountButton" Grid.Row="4" Content="Debit User Account" Margin="10" Click="DebitAccountButton_Click"/>
         <Button x:Name="CreditAccountButton" Grid.Row="5" Content="Credit User Account" Margin="10" Click="CreditAccountButton_Click"/>
         <Button x:Name="ClearAccountBalance" Grid.Row="6" Content="Clear Account Balance" Margin="10" Click="ClearAccountButton_Click"/>

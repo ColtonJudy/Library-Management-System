@@ -21,58 +21,21 @@ namespace Library_Management_System
     /// </summary>
     public partial class ChargeFeeToUser : Window
     {
-        MySqlConnection connection;
+        private string selectedUser = "";
+        private double amountToCharge = 0.0;
 
-        public string selectedUser = "";
-        public double amountToCharge = 0.0;
-
-        public static readonly Regex previewTextRegex = new Regex(@"^[1-9]\d{0,2}(\.|\.\d{1,2})?$"); //this allows it to end with a decimal while the user is typing
-        public static readonly Regex textRegex = new Regex(@"^[1-9]\d{0,2}(\.\d{1,2})?$"); //this does not allow the amount to end with a decimal
+        private static readonly Regex previewTextRegex = new Regex(@"^[1-9]\d{0,2}(\.|\.\d{1,2})?$"); //this allows it to end with a decimal while the user is typing
+        private static readonly Regex textRegex = new Regex(@"^[1-9]\d{0,2}(\.\d{1,2})?$"); //this does not allow the amount to end with a decimal
 
         public ChargeFeeToUser()
         {
             InitializeComponent();
-            connection = new MySqlConnection(LibraryDatabase.GetConnectionString());
             PopulateUserListView();
         }
 
-        public void PopulateUserListView()
+        private void PopulateUserListView()
         {
-            List<string> userList = new List<string>();
-
-            try
-            {
-                connection.Open();
-
-                //TODO: Use IDs instead of names to issue books
-                string query = "SELECT Email FROM Users";
-
-                using (MySqlCommand command = new MySqlCommand(query, connection))
-                {
-
-                    // Execute the query and get the result
-                    using (MySqlDataReader reader = command.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            string user = reader["Email"].ToString();
-                            userList.Add(user);
-                        }
-                    }
-
-                    connection.Close();
-                }
-            }
-            catch (Exception exception)
-            {
-                Console.WriteLine("Error: " + exception.Message);
-            }
-            finally
-            {
-                connection.Close();
-            }
-
-            UserListView.ItemsSource = userList;
+            UserListView.ItemsSource = LibraryUsers.GetUsers();
         }
 
         private void UserListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -80,7 +43,7 @@ namespace Library_Management_System
             selectedUser = UserListView.SelectedItem.ToString() ?? "";
         }
 
-        public void PreviewTextInput(object sender, TextCompositionEventArgs e)
+        private void PreviewInput(object sender, TextCompositionEventArgs e)
         {
             TextBox textBox = (TextBox)sender;
             int index = textBox.CaretIndex;
@@ -90,12 +53,12 @@ namespace Library_Management_System
             e.Handled = !IsPreviewTextAllowed(newText);
         }
 
-        public static bool IsPreviewTextAllowed(string text)
+        private static bool IsPreviewTextAllowed(string text)
         {
             return previewTextRegex.IsMatch(text);
         }
 
-        public static bool IsTextAllowed(string text)
+        private static bool IsTextAllowed(string text)
         {
             return textRegex.IsMatch(text);
         }
@@ -114,36 +77,8 @@ namespace Library_Management_System
 
         private void ChargeFeeButton_Click(object sender, RoutedEventArgs e)
         {
-            if (selectedUser != "" && amountToCharge != 0.0)
-            {
-                try
-                {
-                    connection.Open();
-
-                    //TODO: Use IDs instead of names to issue books
-                    string query = "UPDATE Users SET AccountBalance = AccountBalance - @ChargedFee WHERE Email = @UserEmail";
-
-                    using (MySqlCommand command = new MySqlCommand(query, connection))
-                    {
-
-                        command.Parameters.AddWithValue("@UserEmail", selectedUser);
-                        command.Parameters.AddWithValue("@ChargedFee", amountToCharge);
-                        command.ExecuteNonQuery();
-
-                        connection.Close();
-                    }
-                }
-                catch (Exception exception)
-                {
-                    Console.WriteLine("Error: " + exception.Message);
-                }
-                finally
-                {
-                    connection.Close();
-                }
-
-                Close();
-            }
+            LibraryUsers.ChargeAccount(selectedUser, amountToCharge);
+            Close();
         }
     }
 }
