@@ -5,21 +5,23 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Library_Management_System"
         mc:Ignorable="d"
-        Title="BookInformation" Height="300" Width="200">
+        Title="BookInformation" Height="200" Width="300">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Label x:Name = "NameLabel" Grid.Row="0" Content="Name" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        <Label x:Name = "AuthorLabel" Grid.Row="1" Content="Author" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        <Label x:Name = "IDLabel" Grid.Row="2" Content="ID" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        <Label x:Name = "LoanedToLabel" Grid.Row="3" Content="Loaned to" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <Label x:Name = "NameLabel" Grid.Row="1" Content="Name" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <Label x:Name = "AuthorLabel" Grid.Row="2" Content="Author" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <Label x:Name = "IDLabel" Grid.Row="3" Content="ID" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <Label x:Name = "LoanedToLabel" Grid.Row="4" Content="Loaned to" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center"/>
     </Grid>
 </Window>

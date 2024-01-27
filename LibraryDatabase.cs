@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Library_Management_System
 {
-    public class LibraryDatabase
+    public static class LibraryDatabase
     {
         public static string GetConnectionString()
         {

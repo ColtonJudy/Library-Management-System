@@ -54,5 +54,12 @@ namespace Library_Management_System
             AdminManageUsers adminManageUsers = new AdminManageUsers();
             adminManageUsers.ShowDialog();
         }
+
+        private void logoutButton_Click(object sender, RoutedEventArgs e)
+        {
+            LoginWindow loginWindow = new LoginWindow();
+            loginWindow.Show();
+            Close();
+        }
     }
 }

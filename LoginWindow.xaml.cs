@@ -51,6 +51,7 @@ namespace Library_Management_System
                 else
                 {
                     UserWindow userWindow = new UserWindow();
+                    userWindow.SetCurrentUser(enteredEmail);
                     userWindow.Show();
                     Close();
                 }

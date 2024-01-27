@@ -15,13 +15,12 @@ using System.Windows.Shapes;
 namespace Library_Management_System
 {
     /// <summary>
-    /// Interaction logic for UserWindow.xaml
+    /// Interaction logic for LibraryHours.xaml
     /// </summary>
-    public partial class UserWindow : Window
+    public partial class LibraryHours : Window
     {
-        public UserWindow()
+        public LibraryHours()
         {
-            WindowStartupLocation = WindowStartupLocation.CenterScreen;
             InitializeComponent();
         }
     }

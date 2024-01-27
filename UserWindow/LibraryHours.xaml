@@ -1,0 +1,33 @@
+﻿<Window x:Class="Library_Management_System.LibraryHours"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Library_Management_System"
+        mc:Ignorable="d"
+        Title="LibraryHours" Height="300" Width="200">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Label Grid.Row="0" Content="Library Hours" FontSize="15" HorizontalAlignment="Center"/>
+        
+        <Label Grid.Row="2" Content="Monday 7:00 AM - 9:00PM" FontSize="12" HorizontalAlignment="Center"/>
+        <Label Grid.Row="3" Content="Tuesday 7:00 AM - 9:00PM" FontSize="12" HorizontalAlignment="Center"/>
+        <Label Grid.Row="4" Content="Wednesday 7:00 AM - 9:00PM" FontSize="12" HorizontalAlignment="Center"/>
+        <Label Grid.Row="5" Content="Thursday 7:00 AM - 9:00PM" FontSize="12" HorizontalAlignment="Center"/>
+        <Label Grid.Row="6" Content="Friday 7:00 AM - 6:00PM" FontSize="12" HorizontalAlignment="Center"/>
+        <Label Grid.Row="7" Content="Saturday 9:00 AM - 2:00PM" FontSize="12" HorizontalAlignment="Center"/>
+        <Label Grid.Row="8" Content="Closed Sunday" FontSize="12" HorizontalAlignment="Center"/>
+    </Grid>
+</Window>
