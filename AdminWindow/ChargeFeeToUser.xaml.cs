@@ -17,7 +17,7 @@ using System.Windows.Shapes;
 namespace Library_Management_System
 {
     /// <summary>
-    /// Interaction logic for ChargeFeeToUser.xaml
+    /// Interaction logic for ChargeFeeToUser.xaml 
     /// </summary>
     public partial class ChargeFeeToUser : Window
     {
