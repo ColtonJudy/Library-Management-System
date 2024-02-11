@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Library_Management_System"
         mc:Ignorable="d"
-        Title="ManageCheckedOutBooks" Height="300" Width="200"
+        ResizeMode="NoResize"
+        Title="Manage Books" Height="300" Width="200"
         Loaded="Window_Loaded">
     <Grid>
         <Grid.ColumnDefinitions>

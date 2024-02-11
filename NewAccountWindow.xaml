@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Library_Management_System"
         mc:Ignorable="d"
-        Title="NewAccountWindow" Height="450" Width="800">
+        ResizeMode="NoResize"
+        Title="Library Management System - Create New Account" Height="450" Width="800">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -39,7 +40,7 @@
 
         <Label Grid.Column="2" Grid.Row="4" x:Name="errorLabel" Content="" Foreground="Red" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5" />
         <Button Grid.Column="4" Grid.Row="4" x:Name="createNewButton" Content="Create New Account" Margin="15" Click="CreateNewButton_Click"/>
-        
-        <Button Grid.Column="5" Grid.Row="0" x:Name="loginExistingButton" Content="Log in with existing account" Margin="5,30,5,30" Click="LoginExistingButton_Click"/>
+
+        <Button Grid.Column="5" Grid.Row="0" x:Name="loginExistingButton" Content="Use existing account" Margin="15,30,15,30" Click="LoginExistingButton_Click"/>
     </Grid>
 </Window>
