@@ -1,4 +1,10 @@
-# Library Management System
+<p align="center">
+  <img src="https://github.com/ColtonJudy/Library-Management-System/assets/73195148/ee3c2f95-662e-4633-87a4-90f27c3d4925" alt="Library Management System"/>
+</p>
+
+<h1 align="center">
+   Library Management System
+</h1>
 
 This program is a simple albeit comprehensive Library Management System using the WPF .NET Framework. It is written in C# and uses a MySQL Database to store user and book information.
 
