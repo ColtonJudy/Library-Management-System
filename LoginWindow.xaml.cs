@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -31,19 +32,14 @@ namespace Library_Management_System
 
         private void LoginButton_Click(object sender, RoutedEventArgs e)
         {
-            //THIS IS UNSECURE
             string enteredEmail = emailTextbox.Text;
-            string enteredPassword = passwordBox.Password.ToString();
 
-
-            if (IsValidUser(enteredEmail, enteredPassword))
+            if (IsValidUser(enteredEmail, passwordBox))
             {
                 errorLabel.Content = "Login Successful";
 
                 if (IsAdmin(enteredEmail))
                 {
-
-                    //change this later
                     AdminWindow adminWindow = new AdminWindow();
                     adminWindow.Show();
                     Close();
@@ -62,33 +58,27 @@ namespace Library_Management_System
             }
         }
 
-        private bool IsValidUser(string email, string password)
+        private bool IsValidUser(string email, PasswordBox passwordBox)
         {
             try
             {
                 connection.Open();
 
-                string query = "SELECT COUNT(*) FROM Users WHERE Email = @Email AND Password = @Password";
+                string query = "SELECT PasswordHash FROM Users WHERE Email = @Email";
 
                 using (MySqlCommand command = new MySqlCommand(query, connection))
                 {
                     // Set the parameters
-                    //TODO: HASH PASSWORDS
                     command.Parameters.AddWithValue("@Email", email);
-                    command.Parameters.AddWithValue("@Password", password);
+                    string hashedPassword = command.ExecuteScalar() as string ?? "";
 
-                    // Execute the query and get the result
-                    long matchingUserCount = (long)command.ExecuteScalar();
-
-                    // Check if a user with matching credentials was found
-                    if (matchingUserCount > 0)
+                    if(hashedPassword == "")
                     {
-                        return true;
-                    }
-                    else
-                    {
+                        //invalid user
                         return false;
                     }
+
+                    return BCrypt.Net.BCrypt.EnhancedVerify(passwordBox.Password, hashedPassword);
                 }
             }
             catch (Exception exception)

@@ -1,4 +1,5 @@
 ﻿using MySql.Data.MySqlClient;
+using Org.BouncyCastle.Crypto.Generators;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,7 +42,7 @@ namespace Library_Management_System
             string firstName = firstNameTextbox.Text;
             string lastName = lastNameTextbox.Text;
             string email = emailTextbox.Text;
-            string password = passwordBox.Password.ToString();
+
             //TODO: Make it to where users cannot have a space in their first or last names, or have the same email as somebody who is already in the system
 
             if (firstName.Length == 0)
@@ -56,9 +57,9 @@ namespace Library_Management_System
             {
                 errorLabel.Content = "Invalid email";
             }
-            else if (password.Length == 0)
+            else if (passwordBox.Password.Length < 5)
             {
-                errorLabel.Content = "Invalid password";
+                errorLabel.Content = "Invalid password length";
             }
             else
             {
@@ -83,16 +84,15 @@ namespace Library_Management_System
                     }
 
                     //insert the new user into the table
-                    string query2 = "INSERT INTO users (FirstName, LastName, Email, Password, IsAdmin, AccountBalance) VALUES (@FirstName, @LastName, @Email, @Password, @IsAdmin, @AccountBalance)";
+                    string query2 = "INSERT INTO users (FirstName, LastName, Email, PasswordHash, IsAdmin, AccountBalance) VALUES (@FirstName, @LastName, @Email, @PasswordHash, @IsAdmin, @AccountBalance)";
 
                     using (MySqlCommand command = new MySqlCommand(query2, connection))
                     {
-                        // Set the parameters
-                        //TODO: HASH PASSWORDS
+
                         command.Parameters.AddWithValue("@FirstName", firstName);
                         command.Parameters.AddWithValue("@LastName", lastName);
                         command.Parameters.AddWithValue("@Email", email);
-                        command.Parameters.AddWithValue("@Password", password);
+                        command.Parameters.AddWithValue("@PasswordHash", BCrypt.Net.BCrypt.EnhancedHashPassword(passwordBox.Password, 13));
                         command.Parameters.AddWithValue("@IsAdmin", 0);
                         command.Parameters.AddWithValue("@AccountBalance", 0.00);
                         command.ExecuteNonQuery();
