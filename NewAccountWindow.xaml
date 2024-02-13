@@ -38,7 +38,7 @@
         <Label Grid.Column="1" Grid.Row="3" Content="Password:" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
         <PasswordBox Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="3" x:Name="passwordBox" VerticalAlignment="Center" Padding="5" Margin="10"/>
 
-        <Label Grid.Column="2" Grid.Row="4" x:Name="errorLabel" Content="" Foreground="Red" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5" />
+        <Label Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="4" x:Name="errorLabel" Content="" Foreground="Red" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5" />
         <Button Grid.Column="4" Grid.Row="4" x:Name="createNewButton" Content="Create New Account" Margin="15" Click="CreateNewButton_Click"/>
 
         <Button Grid.Column="5" Grid.Row="0" x:Name="loginExistingButton" Content="Use existing account" Margin="15,30,15,30" Click="LoginExistingButton_Click"/>

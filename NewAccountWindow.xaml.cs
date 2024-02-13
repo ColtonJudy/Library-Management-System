@@ -3,7 +3,9 @@ using Org.BouncyCastle.Crypto.Generators;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -22,6 +24,7 @@ namespace Library_Management_System
     public partial class NewAccountWindow : Window
     {
         private MySqlConnection connection;
+
 
         public NewAccountWindow()
         {
@@ -43,8 +46,6 @@ namespace Library_Management_System
             string lastName = lastNameTextbox.Text;
             string email = emailTextbox.Text;
 
-            //TODO: Make it to where users cannot have a space in their first or last names, or have the same email as somebody who is already in the system
-
             if (firstName.Length == 0)
             {
                 errorLabel.Content = "Invalid first name";
@@ -53,13 +54,29 @@ namespace Library_Management_System
             {
                 errorLabel.Content = "Invalid last name";
             }
-            else if (email.Length == 0)
+            else if (email.Length == 0 || !IsValidEmail(email))
             {
                 errorLabel.Content = "Invalid email";
             }
-            else if (passwordBox.Password.Length < 5)
+            else if (passwordBox.Password.Length == 0)
             {
-                errorLabel.Content = "Invalid password length";
+                errorLabel.Content = "Please enter a password";
+            }
+            else if (passwordBox.Password.Length < 8)
+            {
+                errorLabel.Content = "Password must contain at least\n8 characters";
+            }
+            else if (!passwordBox.Password.Any(char.IsUpper))
+            {
+                errorLabel.Content = "Password must contain at least\n1 uppercase letter";
+            }
+            else if (!passwordBox.Password.Any(char.IsLower))
+            {
+                errorLabel.Content = "Password must contain at least\n1 lowercase letter";
+            }
+            else if (!passwordBox.Password.Any(char.IsDigit))
+            {
+                errorLabel.Content = "Password must contain at least\n1 number";
             }
             else
             {
@@ -112,6 +129,22 @@ namespace Library_Management_System
                     connection.Close();
                 }
             }
+        }
+
+        private static bool IsValidEmail(string email)
+        {
+            var valid = true;
+
+            try
+            {
+                var emailAddress = new MailAddress(email);
+            }
+            catch
+            {
+                valid = false;
+            }
+
+            return valid;
         }
     }
 }
